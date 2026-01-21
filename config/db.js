@@ -14,6 +14,18 @@ db.serialize(() => {
       createdAt TEXT NOT NULL
     )
   `);
+
+  db.run(`
+    CREATE TABLE IF NOT EXISTS Favorites (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      userId INTEGER NOT NULL,
+      videoId TEXT NOT NULL,
+      title TEXT NOT NULL,
+      thumbnail TEXT NOT NULL,
+      createdAt TEXT NOT NULL,
+      FOREIGN KEY (userId) REFERENCES Users(id)
+    )
+  `);
 });
 
 module.exports = db;

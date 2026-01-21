@@ -2,6 +2,7 @@ const express = require("express");
 const path = require("path");
 const sessionMiddleware = require("./config/session");
 const authRoutes = require("./routes/authRoutes");
+const favoriteRoutes = require("./routes/favoriteRoutes");
 const requireAuth = require("./middleware/requireAuth");
 
 const app = express();
@@ -24,16 +25,19 @@ app.use((req, res, next) => {
 
 // routes
 app.use(authRoutes);
+app.use(favoriteRoutes);
 
 // protected home
 app.get("/", requireAuth, (req, res) => {
   res.render("home", { user: req.session.user });
 });
 
-// fallback
+// fallback - MUST BE LAST
 app.use((req, res) => {
   res.status(404).send("Not Found");
 });
 
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`Server running on port ${PORT} update..`));
+app.listen(PORT, () =>
+  console.log(`Server running on port ${PORT} update..`)
+);
