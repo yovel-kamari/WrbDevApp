@@ -1,4 +1,3 @@
-
 class YoutubeService {
   async search(query) {
     const apiKey = process.env.YOUTUBE_API_KEY;
@@ -9,6 +8,11 @@ class YoutubeService {
 
     const response = await fetch(url);
     const data = await response.json();
+
+    if (!data.items || !Array.isArray(data.items)) {
+      console.error("YouTube API error:", data);
+      return [];
+    }
 
     return data.items.map(item => ({
       videoId: item.id.videoId,
